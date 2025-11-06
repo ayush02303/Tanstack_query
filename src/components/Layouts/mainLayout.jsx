@@ -4,7 +4,7 @@ import Header from '../Header'
 import Footer from '../Footer'
 
 
-const mainLayout = () => {
+const MainLayout = () => {
   return (
     <>
     <Header/>
@@ -14,4 +14,4 @@ const mainLayout = () => {
   )
 }
 
-export default mainLayout
+export default MainLayout
