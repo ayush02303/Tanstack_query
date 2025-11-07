@@ -1,15 +1,24 @@
 import React, { useState } from "react"
-import { fetchPosts } from "./api/Api"
-import { useQuery } from "@tanstack/react-query"
+import { deletePost, fetchPosts } from "./api/Api"
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 const FetchRQ = () => {
   const [pageNumber, setPageNumber] = useState(0)
+  const queryClient = useQueryClient()
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts", pageNumber],
     queryFn: () => fetchPosts(pageNumber),
     staleTime: 1000000,
-    refetchInterval: false
+    refetchInterval: false,
+    placeholderData: keepPreviousData
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deletePost(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["posts"]) // refresh after deletion
+    }
   })
 
   if (isLoading) return <p style={{ padding: "2rem" }}>Loading posts...</p>
@@ -41,6 +50,13 @@ const FetchRQ = () => {
                   {post.title}
                 </h3>
                 <p style={{ color: "#555" }}>{post.body}</p>
+
+                <button
+                  onClick={() => deleteMutation.mutate(post.id)}
+                  disabled={deleteMutation.isPending}
+                >
+                  {deleteMutation.isPending ? "Deleting..." : "Delete"}
+                </button>
               </div>
             ))}
           </div>
@@ -49,7 +65,7 @@ const FetchRQ = () => {
         )}
       </div>
 
-      <button 
+      <button
         onClick={() => setPageNumber((prev) => Math.max(prev - 3, 0))}
         disabled={pageNumber === 0}
       >
@@ -58,11 +74,7 @@ const FetchRQ = () => {
 
       <h2>{pageNumber}</h2>
 
-      <button 
-        onClick={() => setPageNumber((prev) => prev + 3)}
-      >
-        Next
-      </button>
+      <button onClick={() => setPageNumber((prev) => prev + 3)}>Next</button>
     </>
   )
 }
