@@ -6,16 +6,25 @@ const api = axios.create({
 
 })
 
-export const fetchPosts = ()=>{
-    return api.get("/posts")
+export const fetchPosts = async ( pageNumber)=>{
+    try{
+      const res = await api.get(`/posts?_start=${pageNumber}&_limit=3`)
+      return res.status === 200 ? res.data : [] 
+    }
+    catch( error ){
+      console.log(error )
+
+    }
      
 }
-const Api = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
 
-export default Api
+
+// const Api = () => {
+//   return (
+//     <div>
+      
+//     </div>
+//   )
+// }
+
+// export default Api
