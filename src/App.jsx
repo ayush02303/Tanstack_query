@@ -8,6 +8,7 @@ import FetchOld from "./Pages/FetchOld";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import FetchIndv from "./components/Layouts/UI/FetchIndv";
+import Sample from "./Sample";
 
 // router can be defined at module scope or inside App
 const router = createBrowserRouter([
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/trad", element: <FetchOld /> },
       { path: "/rq", element: <FetchRQ /> },
-      { path: "/rq/:id", element: <FetchIndv /> }
+      { path: "/rq/:id", element: <FetchIndv /> }, 
+      { path: "/sample", element: <Sample/> }
     ],
   },
 ]);

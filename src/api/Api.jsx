@@ -17,3 +17,7 @@ export const fetchPosts = async (pageNumber) => {
 export const deletePost = (id) => {
   return api.delete(`/posts/${id}`)
 }
+
+export const updatePost = ()=>{
+  return api.patch()``
+}
